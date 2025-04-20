@@ -1,0 +1,86 @@
+# clang-tidy version 15+
+
+Checks: >
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  modernize-*,
+  readability-*,
+  portability-*,
+  misc-*,
+  -bugprone-too-small-loop-variable,
+  -modernize-use-trailing-return-type,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -modernize-pass-by-value,
+  -performance-no-int-to-ptr,
+  -modernize-use-using,
+  -readability-function-size,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -modernize-use-auto,
+  -readability-container-size-empty,
+  -bugprone-branch-clone
+
+WarningsAsErrors: true
+HeaderFilterRegex: '.*\.(h|hpp|hh)$'
+FormatStyle: file
+
+CheckOptions:
+  # Modern C++
+  - key: modernize-use-nullptr
+    value: '1'
+  - key: modernize-use-default-member-init
+    value: '1'
+  - key: modernize-use-emplace
+    value: '1'
+  - key: modernize-use-equals-default
+    value: '1'
+  - key: modernize-use-override
+    value: '1'
+
+  # Readability
+  - key: readability-braces-around-statements
+    value: 'true'
+  - key: readability-isolate-declaration
+    value: 'true'
+  - key: readability-qualified-auto
+    value: 'true'
+  - key: readability-simplify-boolean-expr
+    value: 'true'
+  - key: readability-redundant-access-specifiers
+    value: 'false'
+
+  # Performance
+  - key: performance-for-range-copy
+    value: '1'
+  - key: performance-unnecessary-value-param
+    value: '1'
+  - key: performance-move-const-arg
+    value: '1'
+
+  # Bugprone
+  - key: bugprone-exception-escape
+    value: '1'
+  - key: bugprone-narrowing-conversions
+    value: '1'
+  - key: bugprone-reserved-identifier
+    value: '1'
+
+  # GNU/C exceptions
+  - key: cppcoreguidelines-pro-type-vararg
+    value: '0'
+  - key: hicpp-vararg
+    value: '0'
+  - key: google-readability-todo
+    value: '0'
+  - key: cppcoreguidelines-pro-type-union-access
+    value: '0'
+  - key: cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    value: '0'
+  - key: hicpp-no-array-decay
+    value: '0'
+
+If:
+  - Condition: '${BuildSystem} == "cmake"'
+    AdditionalFlags: ['-extra-arg=-Wno-unknown-warning-option']
