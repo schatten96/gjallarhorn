@@ -6,6 +6,8 @@
 *.sln
 *.vcxproj*
 *.vcxproj.filters
+CMakeUserPresets.json
+
 
 .vscode/
 .idea/
