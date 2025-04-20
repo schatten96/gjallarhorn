@@ -1,0 +1,7 @@
+[requires]
+boost/1.84.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
+deploy = True

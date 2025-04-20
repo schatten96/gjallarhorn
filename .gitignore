@@ -1,0 +1,12 @@
+/build*/
+/cmake-build-debug/
+/out/
+/x64/
+/Win32/
+*.sln
+*.vcxproj*
+*.vcxproj.filters
+
+.vscode/
+.idea/
+*.user
