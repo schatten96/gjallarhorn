@@ -12,3 +12,4 @@ CMakeUserPresets.json
 .vscode/
 .idea/
 *.user
+.cmake/
