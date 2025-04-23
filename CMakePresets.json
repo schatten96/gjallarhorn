@@ -19,7 +19,7 @@
                 "CMAKE_BUILD_TYPE": "Release"
             },
             "toolchainFile": "conan_toolchain.cmake",
-            "binaryDir": "/Users/user/projects/gjallarhorn"
+            "binaryDir": "/Users/user/projects/gjallarhorn/build"
         }
     ],
     "buildPresets": [
