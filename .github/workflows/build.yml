@@ -1,0 +1,66 @@
+name: CI Build
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  check-format:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install clang-format
+      run: sudo apt-get install -y clang-format
+
+    - name: Check formatting
+      run: |
+        find src include -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
+  build:
+    strategy:
+      matrix:
+        build-type: [Debug, Release]
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache Conan dependencies
+      uses: actions/cache@v3
+      id: conan-cache
+      with:
+        path: |
+          ~/.conan2
+          build/${{ matrix.build-type }}
+        key: ${{ runner.os }}-conan-${{ matrix.build-type }}-${{ hashFiles('conanfile.*') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-${{ matrix.build-type }}-
+
+    - name: Set up Conan
+      run: |
+        pip install conan
+        conan profile detect --force
+
+    - name: Install dependencies (${{ matrix.build-type }})
+      run: |
+        conan install . --output-folder=build/${{ matrix.build-type }} \
+          --build=missing -s build_type=${{ matrix.build-type }}
+      if: steps.conan-cache.outputs.cache-hit != 'true'
+
+    - name: Cache CMake
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cmake
+          build/${{ matrix.build-type }}/CMakeCache.txt
+        key: ${{ runner.os }}-cmake-${{ matrix.build-type }}-${{ hashFiles('CMakeLists.txt') }}
+
+    - name: Configure CMake (${{ matrix.build-type }})
+      run: |
+        cmake -B build/${{ matrix.build-type }} \
+          -DCMAKE_TOOLCHAIN_FILE=build/${{ matrix.build-type }}/conan_toolchain.cmake \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+
+    - name: Build (${{ matrix.build-type }})
+      run: cmake --build build/${{ matrix.build-type }} --config ${{ matrix.build-type }}
