@@ -2,7 +2,6 @@
 
 #include <string>
 #include <functional>
-#include <vector>
 
 namespace gh {
 
@@ -10,7 +9,7 @@ class IClient {
 public:
     virtual ~IClient() = default;
 
-    using MessageHandler = std::function<void(const std::vector<uint8_t>&)>;
+    using MessageHandler = std::function<void(const std::string&)>;
     using ConnectionHandler =
         std::function<void(bool connected, const std::string& error)>;
 
@@ -35,7 +34,7 @@ public:
      * @brief Sends message to server
      * @param data - message converted to binary
      */
-    virtual void send(const std::vector<uint8_t>& data) = 0;
+    virtual void send(const std::string& data) = 0;
 
     /**
      * @brief Sets message handler callback
