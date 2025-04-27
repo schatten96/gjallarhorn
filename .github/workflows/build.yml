@@ -17,6 +17,7 @@ jobs:
     - name: Check formatting
       run: |
         find src include -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
+
   build:
     strategy:
       matrix:
@@ -64,3 +65,35 @@ jobs:
 
     - name: Build (${{ matrix.build-type }})
       run: cmake --build build/${{ matrix.build-type }} --config ${{ matrix.build-type }}
+
+  test:
+    needs: build
+    strategy:
+      matrix:
+        build-type: [Debug, Release]
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Restore build artifacts
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.conan2
+          build/${{ matrix.build-type }}
+        key: ${{ runner.os }}-conan-${{ matrix.build-type }}-${{ hashFiles('conanfile.*') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-${{ matrix.build-type }}-
+
+    - name: Run GoogleTest (${{ matrix.build-type }})
+      run: |
+        cd build/${{ matrix.build-type }}
+        ./tests/ghtests --gtest_output="xml:test_results.xml"
+      
+    - name: Publish Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.build-type }}
+        path: build/${{ matrix.build-type }}/test_results.xml
