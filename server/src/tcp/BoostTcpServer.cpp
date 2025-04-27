@@ -1,8 +1,9 @@
 #include "BoostTcpServer.hpp"
+#include "BoostTcpSession.hpp"
 
 namespace gh {
 
-BoostTcpServer::BoostTcpServer(uint16_t port)
+BoostTcpServer::BoostTcpServer(std::uint16_t port)
     : mAcceptor(mIoContext, boost::asio::ip::tcp::endpoint(
                                 boost::asio::ip::tcp::v4(), port)) {
 }

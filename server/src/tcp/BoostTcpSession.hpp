@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ISession.hpp>
+#include "server/ISession.hpp"
 #include <boost/asio.hpp>
 
 namespace gh {

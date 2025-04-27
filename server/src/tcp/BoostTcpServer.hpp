@@ -1,9 +1,12 @@
 #pragma once
 
-#include "BoostTcpSession.hpp"
-#include <IServer.hpp>
+#include "server/IServer.hpp"
+#include <memory>
+#include <boost/asio.hpp>
 
 namespace gh {
+
+class ISession;
 
 class BoostTcpServer : public IServer {
 public:
