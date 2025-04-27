@@ -13,6 +13,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 add_subdirectory(client)
 #add_subdirectory(server)
+add_subdirectory(tests)
 
 add_executable(my_app src/main.cpp)
 target_link_libraries(my_app PRIVATE Boost::boost Boost::system)
