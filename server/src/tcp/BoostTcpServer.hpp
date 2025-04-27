@@ -1,9 +1,14 @@
-#include "../session/TcpSession.hpp"
+#pragma once
+
+#include "BoostTcpSession.hpp"
 #include <IServer.hpp>
 
-class TcpServer : public IServer {
+namespace gh {
+
+class BoostTcpServer : public IServer {
 public:
-    explicit TcpServer(uint16_t port);
+    explicit BoostTcpServer(std::uint16_t port);
+    ~BoostTcpServer() override;
     void start() override;
     void stop() override;
 
@@ -16,3 +21,5 @@ private:
     boost::asio::io_context mIoContext;
     boost::asio::ip::tcp::acceptor mAcceptor;
 };
+
+} // namespace gh
