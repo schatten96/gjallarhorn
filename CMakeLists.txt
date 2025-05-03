@@ -11,9 +11,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(Boost REQUIRED COMPONENTS system)
 
+add_subdirectory(common)
+# add_subdirectory(ui)
 add_subdirectory(client)
 add_subdirectory(server)
 add_subdirectory(tests)
-
-add_executable(my_app src/main.cpp)
-target_link_libraries(my_app PRIVATE Boost::boost Boost::system)
